@@ -35,9 +35,26 @@ characterTree *createNode(void);
 void wordIntoTree(characterTree *root, char *word);
 // Search the tree to see if word is a word given in the characterTree root
 char searchTree(characterTree *root, char *word);
+// Frees the tree's memory
+void freeTree(characterTree* tree);
 
 // // ------------------------ wordBlitzSolver.c functions -----------------------------------
+// ----- Traversal and solver functions -----
+// Driver function for traverseTree. Sorts output and prints it to stdout
 void findAllWordsInBoard(characterTree *root, char board[N][N]);
+// Traverses the board using the trie tree, and saves all words found to listOfAllWords
 void traverseTree(characterTree* currentNode, char* currentString, char board[N][N], char currentX, char currentY, char traversed[N][N], char*** listOfAllWords, int *numTotalWords);
+
+// ----- Sorting functions -----
+// Sort using strcmp
+int sortWords(const void *a, const void *b);
+// Sort using strlen(a) - strlen(b)
+int sortWordsByLength(const void *a, const void *b);
+
+// ----- Adjacent tile functions -----
+// Creates an individual adjacent tile
+adjacentTile createAdjacentTile(char x, char y);
+// Finds all adjacent tiles to a given tile on the board, according to the rules of isAdjacentTile.
 adjacentTile* findAdjacentTiles(short currentX, short currentY, char traversed[N][N], int* numAdjacent);
+// Returns 1 if currentX and currentY >= 0 and < N, and traversed[currentX][currentY] != 1
 char isAdjacentTile(char x, char y, char isTraversed);

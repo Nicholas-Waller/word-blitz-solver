@@ -31,8 +31,6 @@ int main(void)
     }
     printf("\n");
     findAllWordsInBoard(root, board);
-
-
     return 0;
 }
 
@@ -75,7 +73,8 @@ void findAllWordsInBoard(characterTree *root, char board[N][N])
     char **allWordsFiltered = malloc(sizeof(char *) * numWords);
     allWordsFiltered[0] = allWords[0];
     int numCopied = 1;
-    for (int i = 1; i < numWords; i++)
+
+    for (int i = 1; i < numWords; i++) // Remove all duplicates
     {
         if (strcmp(allWords[i], allWords[i - 1]))
         {
@@ -85,17 +84,25 @@ void findAllWordsInBoard(characterTree *root, char board[N][N])
 
     qsort(allWordsFiltered, numCopied, sizeof(char *), sortWordsByLength);
 
-
     for (int i = 0; i < numCopied; i++)
     {
         printf("%s\n", allWordsFiltered[i]);
     }
+
+    // Free all dangling strings
+    for (int i = 0; i < numWords; i++) {
+        free(allWords[i]);
+    }
+    free(allWords);
+    free(allWordsFiltered);
+    freeTree(root);
 }
 
 void traverseTree(characterTree *currentNode, char *currentString, char board[N][N], char currentX, char currentY, char traversed[N][N], char ***listOfAllWords, int *numTotalWords)
 {
-    if (currentNode == NULL)
+    if (!currentNode)
     {
+        free(currentString);
         return;
     }
     if (currentNode->isWord)
@@ -124,6 +131,10 @@ void traverseTree(characterTree *currentNode, char *currentString, char board[N]
         strcpy(newString, currentString);
         strncat(newString, &(board[x][y]), 1);
         traverseTree(currentNode->children[charAsInt(board[x][y])], newString, board, x, y, newTraversed, listOfAllWords, numTotalWords);
+    }
+
+    if (!currentNode->isWord) {
+        free(currentString);
     }
 
     free(allAdjacentTiles);

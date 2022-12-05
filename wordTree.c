@@ -18,6 +18,17 @@ characterTree *createNode(void)
     return node;
 }
 
+void freeTree(characterTree* tree) {
+
+    if (!tree) {
+        return;
+    }
+    for (int i = 0; i < CHARACTER_COUNT; i++) {
+        freeTree(tree->children[i]);
+    }
+    free(tree);
+}
+
 void wordIntoTree(characterTree *root, char *word)
 {
     short wordLength = strlen(word); // Avoid computation of word length on each iteration of the loop
@@ -72,6 +83,7 @@ characterTree *readWords(char *fileName)
         wordIntoTree(root, str);
     }
 
+    free(str);
     fclose(file);
 
     return root;
