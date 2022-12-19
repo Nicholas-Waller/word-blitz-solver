@@ -1,11 +1,15 @@
-solver: wordBlitzSolver.o wordTree.o
-	gcc -Wall -std=c99 wordBlitzSolver.o wordTree.o -o solver
+SRC = src/
+INC = include/
+BIN = bin/
 
-wordBlitzSolver.o: wordBlitzSolver.c helper.h
-	gcc -Wall -std=c99 -c wordBlitzSolver.c
+solver: $(BIN)wordBlitzSolver.o $(BIN)wordTree.o
+	gcc -Wall -std=c99 $(BIN)wordBlitzSolver.o $(BIN)wordTree.o -o solver
 
-wordTree.o: wordTree.c helper.h
-	gcc -Wall -std=c99 -c wordTree.c
+$(BIN)wordBlitzSolver.o: $(INC)helper.h $(SRC)wordBlitzSolver.c 
+	gcc -Wall -std=c99 -I$(INC) -c $(SRC)wordBlitzSolver.c -o $(BIN)wordBlitzSolver.o
+
+$(BIN)wordTree.o: $(SRC)wordTree.c $(INC)helper.h
+	gcc -Wall -std=c99 -I$(INC) -c $(SRC)wordTree.c -o $(BIN)wordTree.o
 	
 clean:
-	rm *.o solver a.out
+	rm *.o $(BIN)*.o solver
